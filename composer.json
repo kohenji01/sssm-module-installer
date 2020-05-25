@@ -1,0 +1,30 @@
+{
+    "name": "sarah-systems/sssm-module-installer",
+    "description": "sssm module installer",
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Shoji Ogura",
+            "email": "kohenji@sarahsytems.com"
+        }
+    ],
+    "require": {
+        "sarah-systems/sssm-base": "dev-master",
+        "sarah-systems/ci4smarty": "dev-master"
+    },
+    "require-dev": {
+        "sarah-systems/sssm-base": "dev-master",
+        "sarah-systems/ci4smarty": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sssm\\ModuleInstaller\\": "src"
+        }
+    },
+    "scripts": {
+        "post-update-cmd": [
+            "@composer dump-autoload"
+        ]
+    }
+}
