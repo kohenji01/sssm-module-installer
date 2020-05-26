@@ -12,7 +12,7 @@
 
 namespace Sssm\ModuleInstaller\Models;
 
-use Sssm\Install\Models;
+use Sssm\Install\Models\SystemInit;
 
 
 class ModuleInstallerBase extends SystemInit{
