@@ -10,10 +10,10 @@
         }
     ],
     "require": {
-        "sarah-systems/sssm-base": "dev-master",
+        "sarah-systems/sssm-base": "dev-master"
     },
     "require-dev": {
-        "sarah-systems/sssm-base": "dev-master",
+        "sarah-systems/sssm-base": "dev-master"
     },
     "autoload": {
         "psr-4": {
