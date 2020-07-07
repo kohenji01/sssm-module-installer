@@ -16,6 +16,7 @@ use CodeIgniter\Database\ConnectionInterface;
 use CodeIgniter\Model;
 use CodeIgniter\Validation\ValidationInterface;
 use Config\Database;
+use Exception;
 use Sssm\Base\Config\SssmBase;
 
 abstract class ModuleInstallerBase extends Model implements ModuleInstallerInterface{
@@ -86,18 +87,23 @@ abstract class ModuleInstallerBase extends Model implements ModuleInstallerInter
     
     public function __construct( ConnectionInterface &$db = null , ValidationInterface $validation = null ){
         parent::__construct( $db , $validation );
-        
-        $_SESSION[$_ENV['sssm.sysname']]['User']['Role'] = $_SESSION[$_ENV['sssm.sysname']]['User']['Role'] ?? null;
-        if( !SssmBase::hasRole( $this->installableUser )  ){
+    
+        try{
+            $_SESSION[$_ENV['sssm.sysname']]['User']['Role'] = $_SESSION[$_ENV['sssm.sysname']]['User']['Role'] ?? null;
+            if( !SssmBase::hasRole( $this->installableUser )  ){
+                throw new Exception();
+            }
+            if( $this->moduleFilePath === null ){
+                throw new Exception();
+            }
+    
+            $this->moduleFilePathBase = dirname( dirname( dirname( $this->moduleFilePath ) ) ) . DIRECTORY_SEPARATOR;
+    
+            $this->info = parse_ini_file( $this->moduleFilePathBase . $_ENV['sssm.module_ini_file'] , true );
+            
+        }catch( Exception $e ){
             throw $e;
         }
-        if( $this->moduleFilePath === null ){
-            throw $e;
-        }
-        
-        $this->moduleFilePathBase = dirname( dirname( dirname( $this->moduleFilePath ) ) ) . DIRECTORY_SEPARATOR;
-        
-        $this->info = parse_ini_file( $this->moduleFilePathBase . $_ENV['sssm.module_ini_file'] , true );
 
     }
     
@@ -121,6 +127,9 @@ abstract class ModuleInstallerBase extends Model implements ModuleInstallerInter
         $this->installed = true;
     }
     
+    /**
+     * @throws Exception
+     */
     public function uninstall(){
         try{
             $forge = Database::forge();
